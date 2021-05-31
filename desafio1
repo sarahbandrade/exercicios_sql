@@ -1,0 +1,32 @@
+--selecione os dados da tabela de pagamentos 
+--onde só apareçam os tipos de pagamento “VOUCHER” e “BOLETO”
+
+SELECT payment_type
+FROM olist_order_payments_dataset
+where payment_type = 'voucher' or payment_type = 'boleto';
+
+--Retorne os campos da tabela de 
+--produtos e calcule o volume de cada produto em um novo campo
+
+SELECT product_length_cm * product_height_cm * product_width_cm 
+FROM olist_products_dataset;
+
+--Retorne somente os reviews que não tem comentários
+
+SELECT review_comment_message
+FROM olist_order_reviews_dataset
+where review_comment_message = "NULL";
+
+-- retorne pedidos que foram feitos somente no ano de 2017
+
+SELECT order_id, order_delivered_carrier_date
+FROM olist_orders_dataset
+where order_delivered_carrier_date like '%2017%';
+
+--encontre os clientes do estado de SP 
+--e que não morem na cidade de São Paulo.
+
+SELECT customer_id, customer_city, customer_state
+FROM olist_customers_dataset
+where customer_state = 'SP'
+AND customer_city <> 'sao paulo';
