@@ -1,0 +1,47 @@
+--retorne a quantidade de itens vendidos 
+--em cada categoria por estado em que o cliente se encontra, 
+--mostrando somente categorias que tenham vendido 
+--uma quantidade de items acima de 1000.
+
+SELECT SUM (id.order_item_id) as quantidade,
+  pd.product_category_name as categoria,
+  cd.customer_state
+FROM olist_order_items_dataset as id
+JOIN olist_order_dataset as od
+ON id.product_id = id.order_id
+JOIN olist_products_dataset as pd
+ON id.product_id = pd.product_id
+JOIN olist_customers_dataset as cd
+ON cd.customer_id = od.customer_id
+GROUP BY pd.product_category_name
+HAVING SUM((id.order_item_id) > 1000;
+
+--mostre os 5 clientes (customer_id) que gastaram mais dinheiro em compras, NÃO CONSEGUI SELECIONAR APENAS OS 5 MAIORES
+--qual foi o valor total de todas as compras deles, 
+--quantidade de compras,
+--e valor médio gasto por compras. 
+--Ordene os mesmos por ordem decrescente pela média do valor de compra.
+
+SELECT od.customer_id as CLIENTE, SUM(pd.payment_value) as "VALOR TOTAL",
+  COUNT (od.order_id) as "QTDE COMPRAS",
+  AVG (pd.payment_value) as "VALOR MEDIO"
+  FROM olist_orders_dataset as od
+  JOIN olist_order_payments_dataset as pd
+  ON od.order_id = pd.order_id
+  GROUP BY od.customer_id
+  ORDER BY AVG (pd.payment_value) DESC;
+  
+--mostre o valor vendido total de cada vendedor (id_vendedor) ACHO QUE A COLUNA VALOR ESTA ERRADA...??
+-- em cada uma das categorias de produtos, 
+--somente retornando os vendedores que nesse somatório e agrupamento venderam mais de $ 1000.
+-- Desejamos ver a categoria do produto e os vendedores. 
+--Para cada uma dessas categorias, mostre seus valores de venda de forma decrescente.
+
+SELECT ID.seller_id, PD.product_category_name, SUM(PYD.payment_value) AS VALOR
+FROM olist_order_items_dataset AS ID
+JOIN  olist_products_dataset AS PD
+ON ID.product_id = PD.product_id
+JOIN olist_order_payments_dataset PYD
+GROUP BY ID.seller_id
+HAVING SUM(ID.PRICE) > 1000
+ORDER BY SUM(ID.PRICE) DESC;
